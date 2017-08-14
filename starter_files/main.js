@@ -8,60 +8,54 @@
 // 4. Create a way to append the fetch results to your page
 // 5. Create a way to listen for a click that will play the song in the audio play
 
+let results = document.getElementById('results');
+let submitButton = document.getElementById('submitButton');
+let searchBar = document.getElementById('searchBar');
 
-let container = document.getElementById('container');
-let searchForm = document.querySelector('.search-form');
 
-searchForm.addEventListener('submit', function(){
-  rows.innerHTML = "";
-  let search="https://itunes.apple.com/search?term=" + searchForm.value;
+submitButton.addEventListener('click', function() {
 
-  fetch(search)
+  results.innerHTML = "";
 
-    .then(function(response) {
-      if (response.status !== 200) {
-        console.log(response.status);
-        return;
-      }
-      response.json().then(function(data) {
-        console.log("Here is the data:", data);
-      });
+  let searchBar = document.getElementById('searchBar');
+  let value = searchBar.value.split("").join("+");
+  let search = "https://itunes.apple.com/search?term=" + value + "&entity=song&limit=15";
+
+  let searchResults = document.getElementById('results');
+
+    fetch(search)
+
+    .then(function(response){
+        response.json().then(function(data) {
+
+
+      for (var i = 0; i < data.results.length; i++) {
+         let songs = document.createElement("div");
+         songs.setAttribute("class", "songs");
+            results.appendChild(songs);
+
+         let albumCover = document.createElement("img");
+            albumCover.setAttribute("src", `${data.results[i].artworkUrl100}`);
+              songs.appendChild(albumCover);
+         let songTitle = document.createElement("p");
+            songTitle.textContent = `${data.results[i].trackName}`;
+              songs.appendChild(songTitle);
+         let artistName = document.createElement("p");
+            artistName.textContent = `${data.results[i].artistName}`;
+            songs.appendChild(artistName);
+
+         albumCover.value = i;
+         albumCover.addEventListener("click", function(event) {
+           music(event.target.value);
+       })
+// music playing functionality//
+       function music(index) {
+           let songToPlay = data.results[index].previewUrl;
+           music_player.setAttribute("src", songToPlay);
+           music_player.load();
+           music_player.play();
+         }
+        }
+      })
     })
-    .catch(function(err) {
-      console.log("Fetch Error :-S", err);
 });
-});
-
-// .then(function(response) {
-// response.json().then(function(data){
-//   for (var i = 0; i < 12; i++) {
-//       if (data.results[i].thumbnail === "") {
-//       rows.innerHTML +=
-//       `
-//       <div class="box">
-//       <h4>${data.results[i].title}</h4>
-//       <img src="http://lorempixel.com/output/food-q-c-150-150-5.jpg"}>
-//       <a href="${data.results[i].href}"><span></span></a>
-//       </div>
-//       `;
-//     }else{
-//
-//     rows.innerHTML +=
-//     `
-//     <div class="box">
-//     <h4>${data.results[i].title}</h4>
-//     <img src=${data.results[i].thumbnail}>
-//     <a href="${data.results[i].href}"><span></span></a>
-//     </div>
-//     `;
-//
-//   }
-//   container.appendChild(rows);
-// };
-// }
-// )
-// .catch(function(err) {
-//   console.log("Fetch Error :-S", err);
-// })
-// })
-// })
