@@ -8,11 +8,12 @@
 .image{
   background-image: url("../images/audience.jpg");
   background-size: cover;
-  background-repeat: repeat;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   padding: 5px;
   width: 100%;
   height:400px;
-  background-position: center;
+  background-position: bottom;
 }
 
 .image h1{
@@ -125,4 +126,8 @@ input{
 
 .songs img{
   height: 150px;
+}
+
+.songs h3{
+  text-shadow: 1px 1px lightgray;
 }

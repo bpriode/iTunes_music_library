@@ -37,7 +37,7 @@ submitButton.addEventListener('click', function() {
          let albumCover = document.createElement("img");
             albumCover.setAttribute("src", `${data.results[i].artworkUrl100}`);
               songs.appendChild(albumCover);
-         let songTitle = document.createElement("p");
+         let songTitle = document.createElement("h3");
             songTitle.textContent = `${data.results[i].trackName}`;
               songs.appendChild(songTitle);
          let artistName = document.createElement("p");
